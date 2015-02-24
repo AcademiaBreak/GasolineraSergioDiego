@@ -23,7 +23,7 @@ public class Gasolinera {
 		String opcion = "";
 		boolean salir = false;
 
-		while (!salir) {
+		while(!salir) {
 			Utilidades.limpiarPantalla();
 			System.out.println("1. Gestion Clientes.");
 			System.out.println("2. Atencion Clientes.");
@@ -31,22 +31,22 @@ public class Gasolinera {
 			System.out.print("\tOpcion: ");
 			try {
 				opcion = in.readLine();
-				if (!Utilidades.esOpcionValida(opcion, 1, 3)) {
+				if(!Utilidades.esOpcionValida(opcion, 1, 3)) {
 					System.out.print("Opcion invalida.");
 					Utilidades.pulsaIntro();
-				} else if (Integer.parseInt(opcion) == 3) {
+				} else if(Integer.parseInt(opcion) == 3) {
 					salir = true;
 				} else {
 					realizarAccionMenuPrincipal(Integer.parseInt(opcion));
 				}
-			} catch (IOException ioe) {
+			} catch(IOException ioe) {
 				System.out.println("Error al leer de teclado...");
 			}
 		}
 	}
 
 	private static void realizarAccionMenuPrincipal(int opc) {
-		switch (opc) {
+		switch(opc) {
 		case 1:
 			gestionClientes();
 			break;
@@ -60,7 +60,7 @@ public class Gasolinera {
 		String opcion = "";
 		boolean salir = false;
 
-		while (!salir) {
+		while(!salir) {
 			Utilidades.limpiarPantalla();
 			System.out.println("1. Alta Cliente.");
 			System.out.println("2. Baja Cliente.");
@@ -71,22 +71,22 @@ public class Gasolinera {
 			System.out.print("\tOpcion: ");
 			try {
 				opcion = in.readLine();
-				if (!Utilidades.esOpcionValida(opcion, 1, 6)) {
-					System.out.print("Opcion invalida.");
+				if(!Utilidades.esOpcionValida(opcion, 1, 6)) {
+					System.out.print("Opcion invalida. ");
 					Utilidades.pulsaIntro();
-				} else if (Integer.parseInt(opcion) == 6) {
+				} else if(Integer.parseInt(opcion) == 6) {
 					salir = true;
 				} else {
 					realizarAccionGestionClientes(Integer.parseInt(opcion));
 				}
-			} catch (IOException ioe) {
+			} catch(IOException ioe) {
 				System.out.println("Error al leer de teclado...");
 			}
 		}
 	}
 
 	private static void realizarAccionGestionClientes(int opc) {
-		switch (opc) {
+		switch(opc) {
 		case 1:
 			altaCliente();
 			break;
@@ -113,7 +113,7 @@ public class Gasolinera {
 			Utilidades.limpiarPantalla();
 			System.out.print("Introduce DNI: ");
 			cad = in.readLine();
-			if (Utilidades.esDni(cad)) {
+			if(Utilidades.esDni(cad)) {
 				soc.setDni(cad);
 				System.out.print("Introduce nombre: ");
 				soc.setNombre(in.readLine());
@@ -121,21 +121,23 @@ public class Gasolinera {
 				soc.setApellidos(in.readLine());
 				System.out.print("Introduce direccion: ");
 				soc.setDireccion(in.readLine());
+				// TODO: Revisar aqui no pide saldo
 				System.out.print("Introduce saldo: ");
 				cad = in.readLine();
-				if (Utilidades.esDecimal(cad)) {
+				if(Utilidades.esDecimal(cad)) {
 					soc.setSaldo(Double.parseDouble(cad));
 					socios.put(soc.getDni(), soc);
-					System.out.print("Socio insertado correctamente.");
+					System.out.println("*** Se procede a dar de alta al cliente:");
+					System.out.println("\t" + soc.getNombre() + " con DNI: " + soc.getDni());
+					System.out.println();
 				} else {
-					System.out.print("Saldo invalido.");
+					System.out.print("Saldo invalido. ");
 				}
 			} else {
-				System.out.print("DNI invalido.");
+				System.out.print("DNI invalido. ");
 			}
-
 			Utilidades.pulsaIntro();
-		} catch (IOException ioe) {
+		} catch(IOException ioe) {
 			System.out.println("Error al leer de teclado...");
 		}
 
@@ -148,18 +150,22 @@ public class Gasolinera {
 	private static void saldoCliente() {
 		String cad = "";
 		String dni = "";
+		Socio soc = null;
 
 		Utilidades.limpiarPantalla();
 		try {
 			System.out.print("Introduzca DNI de socio para meter saldo: ");
 			dni = in.readLine();
-			if (Utilidades.esDni(dni)) {
-				if (socios.containsKey(dni)) {
-					System.out.print("¿Cuanto saldo quieres introducir? ");
+			if(Utilidades.esDni(dni)) {
+				if(socios.containsKey(dni)) {
+					System.out.print("Introduzca el saldo a ingresar: ");
 					cad = in.readLine();
-					if (Utilidades.esDecimal(cad)) {
-						socios.get(dni).ingresarSaldo(Double.parseDouble(cad));
-						System.out.println("Saldo introducido correctamente. ");
+					if(Utilidades.esDecimal(cad)) {
+						soc = socios.get(dni);
+						soc.ingresarSaldo(Double.parseDouble(cad));
+						System.out.println("*** Se procede a incrementar el saldo del cliente:");
+						System.out.println(soc.getNombre() + " con DNI: " + dni + " en " + cad);
+						System.out.println();
 					} else {
 						System.out.print("Saldo introducido no valido. ");
 					}
@@ -170,35 +176,30 @@ public class Gasolinera {
 				System.out.print("DNI introducido no valido. ");
 			}
 			Utilidades.pulsaIntro();
-		} catch (IOException ioe) {
+		} catch(IOException ioe) {
 			System.out.print("Error al leer de teclado");
 
 		}
 
 	}
 
-	//Metodo añadido para probar git
-	private static void prueba() {
-		
-	}
-	
 	private static void altaVehiculo() {
-		// Estoy añadiendo el metodo altaVehiculo
+		// TODO: implementar altaVehiculo
 	}
 
 	private static void bajaVehiculo() {
-		// Añadiendo metodo bajaVehiculo
+		// TODO: implementar bajaVehiculo
 	}
 
 	private static int pedirSurtidor() {
 		String cad = "";
 
 		// TODO: poner logo
-		while (!Utilidades.esEntero(cad)) {
+		while(!Utilidades.esEntero(cad)) {
 			System.out.print("Introduce el surtidor: ");
 			try {
 				cad = in.readLine();
-			} catch (IOException ioe) {
+			} catch(IOException ioe) {
 				System.out.println("Error al leer de teclado...");
 			}
 		}
