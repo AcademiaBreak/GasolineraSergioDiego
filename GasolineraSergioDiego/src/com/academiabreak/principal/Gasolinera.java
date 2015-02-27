@@ -175,7 +175,6 @@ public class Gasolinera {
 
 	private static void altaVehiculo() {
 		String dni = "";
-		String cad = "";
 		Socio soc = null;
 		Vehiculo v;
 
