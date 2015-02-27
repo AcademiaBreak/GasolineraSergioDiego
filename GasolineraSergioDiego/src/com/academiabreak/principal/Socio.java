@@ -72,7 +72,10 @@ public class Socio {
 	public void insertarVehiculo(Vehiculo v) {
 		vehiculos.put(v.getMatricula(), v);
 	}
-
+	
+	public Vehiculo getVehiculo(String matricula){
+		return vehiculos.get(matricula);
+	}
 	public boolean eliminarVehiculo(String matricula) {
 		boolean eliminado = false;
 		Vehiculo v = vehiculos.remove(matricula);

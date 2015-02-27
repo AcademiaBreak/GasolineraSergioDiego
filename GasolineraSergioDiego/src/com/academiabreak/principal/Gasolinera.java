@@ -16,9 +16,16 @@ public class Gasolinera {
 		surtidores = new Surtidor[pedirSurtidor()];
 		socios = new Hashtable<String, Socio>();
 
+		crearSurtidores(); 
 		menuPrincipal();
 	}
 
+	private static void crearSurtidores() {
+		for(int i=0; i<surtidores.length; i++) {
+			surtidores[i] = new Surtidor(i); 
+		}
+	}
+	
 	private static void menuPrincipal() {
 		String opcion = "";
 		boolean salir = false;
@@ -54,6 +61,21 @@ public class Gasolinera {
 			// TODO: Atencion Clientes
 			break;
 		}
+	}
+
+	private static boolean estaVehiculoCola(Vehiculo vc) {
+		boolean encontrado = false;
+		int i = 0;
+
+		while(!encontrado && i < surtidores.length) {
+			if(surtidores[i].equals(vc)) {
+				encontrado = true;
+			} else {
+				i++;
+			}
+		}
+
+		return encontrado;
 	}
 
 	private static boolean estaVehiculoCola(Hashtable<String, Vehiculo> listaVehiculos) {
@@ -227,7 +249,7 @@ public class Gasolinera {
 
 		Utilidades.limpiarPantalla();
 		try {
-			System.out.print("Introduzca DNI de socio para meter saldo: ");
+			System.out.print("Introduzca DNI de socio: ");
 			dni = in.readLine();
 			if(Utilidades.esDni(dni)) {
 				if(socios.containsKey(dni)) {
@@ -298,7 +320,7 @@ public class Gasolinera {
 		String opcion = "";
 		Combustible com;
 
-		System.out.println("Introduce modelo: ");
+		System.out.print("Introduce modelo: ");
 		modelo = in.readLine();
 		System.out.println("");
 		System.out.println("1. DIESEL ");
@@ -336,7 +358,43 @@ public class Gasolinera {
 	}
 
 	private static void bajaVehiculo() {
-		// TODO: implementar bajaVehiculo
+		String dni = "";
+		Socio soc;
+		String mat = "";
+
+		Utilidades.limpiarPantalla();
+		try {
+			System.out.print("Introduzca el DNI del cliente: ");
+			dni = in.readLine();
+			if(Utilidades.esDni(dni)) {
+				if(socios.containsKey(dni)) {
+					soc = socios.get(dni);
+					System.out.print("Introduce la matricula: ");
+					mat = in.readLine();
+					if(soc.estaVehiculo(mat)) {
+						if(!estaVehiculoCola(soc.getVehiculo(mat))) {
+							socios.remove(dni);
+							System.out.println("***Se procede a dar de baja al vehiculo del cliente :");
+							System.out.println("\t" + soc.getNombre() + " con DNI: " + dni + " matricula vehículo: "
+									+ mat);
+						} else {
+							System.out.println("\t" + soc.getNombre() + " con DNI: " + dni
+									+ " tiene este vehiculo en cola. ");
+						}
+					} else {
+						System.out.print("La matricula " + mat + " no pertenecce al socio con DNI " + dni);
+					}
+				} else {
+					System.out.print("Introducido cliente no existente. ");
+				}
+			} else {
+				System.out.print("DNI invalido. ");
+			}
+			Utilidades.pulsaIntro();
+		} catch(IOException ioe) {
+			System.out.print("Error al leer por teclado: ");
+		}
+
 	}
 
 	private static int pedirSurtidor() {
