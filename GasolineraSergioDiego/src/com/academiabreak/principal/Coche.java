@@ -2,18 +2,18 @@ package com.academiabreak.principal;
 
 public class Coche extends Vehiculo {
 	private String modelo;
-	private Combustible combustible; 
-	
+	private Combustible combustible;
+
 	public Coche() {
-		super(); 
-		modelo = ""; 
+		super();
+		modelo = "";
 		combustible = null;
 	}
 
 	public Coche(String matricula, String marca, String modelo, Combustible com) {
 		super(matricula, marca);
-		this.modelo=modelo;
-		this.combustible = com; 
+		this.modelo = modelo;
+		this.combustible = com;
 	}
 
 	public String getModelo() {

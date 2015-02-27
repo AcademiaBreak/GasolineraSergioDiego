@@ -1,14 +1,12 @@
 package com.academiabreak.principal;
 
 public enum Combustible {
-	DIESEL,
-	GASOLINA,
-	ELECTRICO; 
-	
+	DIESEL, GASOLINA, ELECTRICO;
+
 	public static Combustible getCombustibleByNum(String num) {
-		Combustible com; 
+		Combustible com;
 		com = null;
-		
+
 		switch(num) {
 		case "1":
 			com = DIESEL;
@@ -20,7 +18,7 @@ public enum Combustible {
 			com = ELECTRICO;
 			break;
 		}
-		
-		return com; 
+
+		return com;
 	}
 }

@@ -3,18 +3,18 @@ package com.academiabreak.principal;
 public class Vehiculo {
 	private String matricula;
 	private String marca;
-	
+
 	public Vehiculo() {
 		matricula = "";
 		marca = "";
 	}
-	
+
 	public Vehiculo(String matricula, String marca) {
 		super();
 		this.matricula = matricula;
 		this.marca = marca;
 	}
-	
+
 	public String getMatricula() {
 		return matricula;
 	}
@@ -31,8 +31,4 @@ public class Vehiculo {
 		this.marca = marca;
 	}
 
-	
-	
-	
-	
 }

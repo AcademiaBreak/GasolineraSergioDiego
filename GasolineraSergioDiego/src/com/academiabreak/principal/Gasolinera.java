@@ -3,7 +3,7 @@ package com.academiabreak.principal;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 public class Gasolinera {
@@ -54,6 +54,26 @@ public class Gasolinera {
 			// TODO: Atencion Clientes
 			break;
 		}
+	}
+
+	private static boolean estaVehiculoCola(Hashtable<String, Vehiculo> listaVehiculos) {
+		boolean encontrado = false;
+		int i = 0;
+		Vehiculo vc;
+		Enumeration keys = listaVehiculos.keys();
+
+		while(keys.hasMoreElements()) {
+			vc = listaVehiculos.get(keys.nextElement());
+			while(!encontrado && i < surtidores.length) {
+				if(surtidores[i].equals(vc)) {
+					encontrado = true;
+				} else {
+					i++;
+				}
+			}
+		}
+
+		return encontrado;
 	}
 
 	private static void gestionClientes() {
@@ -136,7 +156,34 @@ public class Gasolinera {
 	}
 
 	private static void bajaCliente() {
-		//TODO: implementar bajaCliente
+		String cad = "";
+		Socio soc;
+
+		Utilidades.limpiarPantalla();
+		try {
+			System.out.print("Introduzca el DNI del cliente que desea eliminar: ");
+			cad = in.readLine();
+			if(Utilidades.esDni(cad)) {
+				if(socios.containsKey(cad)) {
+					soc = socios.get(cad);
+					if(!estaVehiculoCola(soc.getVehiculos())) {
+						socios.remove(cad);
+						System.out.println("***Se procede a dar de baja al cliente:");
+						System.out.println("\t" + soc.getNombre() + " con DNI: " + cad);
+					} else {
+						System.out.println("\t" + soc.getNombre() + " con DNI: " + cad + "tiene vehiculos en cola. ");
+					}
+				} else {
+					System.out.print("Introducido cliente no existente. ");
+				}
+			} else {
+				System.out.print("DNI invalido.");
+			}
+			Utilidades.pulsaIntro();
+		} catch(IOException ioe) {
+			System.out.print("Error al leer por teclado: ");
+		}
+
 	}
 
 	private static void saldoCliente() {

@@ -8,26 +8,25 @@ public class Socio {
 	private String apellidos;
 	private String direccion;
 	private double saldo;
-	private Hashtable<String,Vehiculo> vehiculos; 
-	
+	private Hashtable<String, Vehiculo> vehiculos;
+
 	public Socio() {
 		dni = "";
 		nombre = "";
 		apellidos = "";
 		direccion = "";
 		saldo = 0;
-		vehiculos = new Hashtable<String,Vehiculo>(); 
+		vehiculos = new Hashtable<String, Vehiculo>();
 	}
-	
-	public Socio(String dni, String nombre, String apellidos,
-			String direccion, double saldo) {
+
+	public Socio(String dni, String nombre, String apellidos, String direccion, double saldo) {
 		super();
 		this.dni = dni;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
 		this.direccion = direccion;
 		this.saldo = saldo;
-		vehiculos = new Hashtable<String,Vehiculo>(); 
+		vehiculos = new Hashtable<String, Vehiculo>();
 	}
 
 	public String getDni() {
@@ -71,36 +70,41 @@ public class Socio {
 	}
 
 	public void insertarVehiculo(Vehiculo v) {
-		vehiculos.put(v.getMatricula(),v); 
+		vehiculos.put(v.getMatricula(), v);
 	}
-	
+
 	public boolean eliminarVehiculo(String matricula) {
-		boolean eliminado = false; 
+		boolean eliminado = false;
 		Vehiculo v = vehiculos.remove(matricula);
-		
+
 		if(v != null) {
-			eliminado = true; 
+			eliminado = true;
 		}
-		
-		return eliminado; 
+
+		return eliminado;
 	}
-	
+
 	public boolean estaVehiculo(String matricula) {
-		return vehiculos.containsKey(matricula); 
+		return vehiculos.containsKey(matricula);
 	}
-	
+
 	public void ingresarSaldo(double cant) {
-		this.saldo += cant; 
+		this.saldo += cant;
 	}
-	
+
 	public boolean retirarSaldo(double cant) {
-		boolean retirado = false; 
-		
+		boolean retirado = false;
+
 		if(saldo > cant) {
-			saldo = saldo - cant; 
-			retirado = true; 
+			saldo = saldo - cant;
+			retirado = true;
 		}
-		
-		return retirado; 
+
+		return retirado;
 	}
+
+	public Hashtable<String, Vehiculo> getVehiculos() {
+		return (Hashtable<String, Vehiculo>)vehiculos.clone();
+	}
+
 }
