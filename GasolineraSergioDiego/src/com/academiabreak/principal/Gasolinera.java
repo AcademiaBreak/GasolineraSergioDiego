@@ -136,7 +136,7 @@ public class Gasolinera {
 	}
 
 	private static void bajaCliente() {
-
+		//TODO: implementar bajaCliente
 	}
 
 	private static void saldoCliente() {
