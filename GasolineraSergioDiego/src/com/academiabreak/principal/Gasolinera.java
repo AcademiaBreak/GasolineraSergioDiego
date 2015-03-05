@@ -58,11 +58,15 @@ public class Gasolinera {
 			gestionClientes();
 			break;
 		case 2:
-			// TODO: Atencion Clientes
+			//TODO: atenderClientes(); 
 			break;
 		}
 	}
 
+	private static void atenderClientes() {
+		//TODO: menu atencionClientes()
+	}
+	
 	private static boolean estaVehiculoCola(Vehiculo vc) {
 		boolean encontrado = false;
 		int i = 0;
