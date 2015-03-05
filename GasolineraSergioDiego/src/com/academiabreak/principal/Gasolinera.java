@@ -72,7 +72,14 @@ public class Gasolinera {
 		int i = 0;
 
 		while(!encontrado && i < surtidores.length) {
+			//TODO: reimplementar estaVehiculoCola
+			/*
+			 * Esto ahora mismo esta comparando surtidores[i] (Que es un Surtidor) con vc (Que es un coche)
+			 * Hay que hacer un metodo en la clase surtidor que reciba una matricula y diga
+			 * si está o si no
+			 */
 			if(surtidores[i].equals(vc)) {
+				//Algo como surtidores[i].estaVehiculo(vc.getMatricula()); 
 				encontrado = true;
 			} else {
 				i++;
@@ -91,6 +98,10 @@ public class Gasolinera {
 		while(keys.hasMoreElements()) {
 			vc = listaVehiculos.get(keys.nextElement());
 			while(!encontrado && i < surtidores.length) {
+				//TODO: reimplementar estaVehiculoCola
+				/*
+				 * Lo mismo que en el metodo de arriba
+				 */
 				if(surtidores[i].equals(vc)) {
 					encontrado = true;
 				} else {
