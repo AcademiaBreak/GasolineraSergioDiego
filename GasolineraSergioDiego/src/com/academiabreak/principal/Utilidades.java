@@ -16,6 +16,17 @@ public class Utilidades {
 		return esValida;
 	}
 
+	public static void imprimirCabecera() {
+		System.out.println("***********************************************");
+		System.out.println("*                                             *");
+		System.out.println("*                 GASODAM                     *");
+		System.out.println("*           Versión Alpha 1.0.0               *");
+		System.out.println("*                                             *");
+		System.out.println("*                                  (c) 1º DAM *");
+		System.out.println("***********************************************");
+		System.out.println();
+	}
+
 	public static boolean esEntero(String cad) {
 		boolean esEntero = !cad.isEmpty();
 		int i = 0;

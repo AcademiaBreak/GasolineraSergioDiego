@@ -16,22 +16,23 @@ public class Gasolinera {
 		surtidores = new Surtidor[pedirSurtidor()];
 		socios = new Hashtable<String, Socio>();
 
-		crearSurtidores(); 
+		crearSurtidores();
 		menuPrincipal();
 	}
 
 	private static void crearSurtidores() {
-		for(int i=0; i<surtidores.length; i++) {
-			surtidores[i] = new Surtidor(i); 
+		for(int i = 0; i < surtidores.length; i++) {
+			surtidores[i] = new Surtidor(i);
 		}
 	}
-	
+
 	private static void menuPrincipal() {
 		String opcion = "";
 		boolean salir = false;
 
 		while(!salir) {
 			Utilidades.limpiarPantalla();
+			Utilidades.imprimirCabecera();
 			System.out.println("1. Gestion Clientes.");
 			System.out.println("2. Atencion Clientes.");
 			System.out.println("3. Salir.");
@@ -58,28 +59,23 @@ public class Gasolinera {
 			gestionClientes();
 			break;
 		case 2:
-			//TODO: atenderClientes(); 
+			// TODO: atenderClientes();
 			break;
 		}
 	}
 
 	private static void atenderClientes() {
-		//TODO: menu atencionClientes()
+		// TODO: menu atencionClientes()
 	}
-	
+
 	private static boolean estaVehiculoCola(Vehiculo vc) {
 		boolean encontrado = false;
 		int i = 0;
 
 		while(!encontrado && i < surtidores.length) {
-			//TODO: reimplementar estaVehiculoCola
-			/*
-			 * Esto ahora mismo esta comparando surtidores[i] (Que es un Surtidor) con vc (Que es un coche)
-			 * Hay que hacer un metodo en la clase surtidor que reciba una matricula y diga
-			 * si está o si no
-			 */
-			if(surtidores[i].equals(vc)) {
-				//Algo como surtidores[i].estaVehiculo(vc.getMatricula()); 
+
+			if(surtidores[i].estaVehiculo((vc))) {
+
 				encontrado = true;
 			} else {
 				i++;
@@ -98,11 +94,8 @@ public class Gasolinera {
 		while(keys.hasMoreElements()) {
 			vc = listaVehiculos.get(keys.nextElement());
 			while(!encontrado && i < surtidores.length) {
-				//TODO: reimplementar estaVehiculoCola
-				/*
-				 * Lo mismo que en el metodo de arriba
-				 */
-				if(surtidores[i].equals(vc)) {
+
+				if(surtidores[i].estaVehiculo(vc)) {
 					encontrado = true;
 				} else {
 					i++;
@@ -119,6 +112,7 @@ public class Gasolinera {
 
 		while(!salir) {
 			Utilidades.limpiarPantalla();
+			Utilidades.imprimirCabecera();
 			System.out.println("1. Alta Cliente.");
 			System.out.println("2. Baja Cliente.");
 			System.out.println("3. Ingreso Saldo Cliente.");
@@ -168,6 +162,7 @@ public class Gasolinera {
 
 		try {
 			Utilidades.limpiarPantalla();
+			Utilidades.imprimirCabecera();
 			System.out.print("Introduce DNI: ");
 			cad = in.readLine();
 			if(Utilidades.esDni(cad)) {
@@ -197,6 +192,7 @@ public class Gasolinera {
 		Socio soc;
 
 		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		try {
 			System.out.print("Introduzca el DNI del cliente que desea eliminar: ");
 			cad = in.readLine();
@@ -229,6 +225,7 @@ public class Gasolinera {
 		Socio soc = null;
 
 		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		try {
 			System.out.print("Introduzca DNI de socio para meter saldo: ");
 			dni = in.readLine();
@@ -263,6 +260,7 @@ public class Gasolinera {
 		Vehiculo v;
 
 		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		try {
 			System.out.print("Introduzca DNI de socio: ");
 			dni = in.readLine();
@@ -294,7 +292,8 @@ public class Gasolinera {
 		String matricula = "";
 		String marca = "";
 		String opcion = "";
-
+		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		try {
 			System.out.print("Introduzca matricula: ");
 			matricula = in.readLine();
@@ -378,6 +377,7 @@ public class Gasolinera {
 		String mat = "";
 
 		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		try {
 			System.out.print("Introduzca el DNI del cliente: ");
 			dni = in.readLine();
@@ -415,7 +415,8 @@ public class Gasolinera {
 	private static int pedirSurtidor() {
 		String cad = "";
 
-		// TODO: poner logo
+		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		while(!Utilidades.esEntero(cad)) {
 			System.out.print("Introduce el surtidor: ");
 			try {
