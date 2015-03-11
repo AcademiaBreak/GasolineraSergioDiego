@@ -60,7 +60,7 @@ public class Gasolinera {
 			break;
 		case 2:
 			if(hayVehiculosEnCola()) {
-				atenderCliente();
+				atenderVehiculo();
 			} else {
 				System.out.println("No hay vehiculos esperando...");
 				Utilidades.pulsaIntro();
@@ -93,7 +93,7 @@ public class Gasolinera {
 			System.out.println("Error al leer de teclado...");
 		}
 	}
-	
+
 	private static boolean hayVehiculosEnCola() {
 		boolean hayVehiculos = false;
 		int i = 0;
@@ -109,7 +109,7 @@ public class Gasolinera {
 		return hayVehiculos;
 	}
 
-	private static void atenderCliente() {
+	private static void atenderVehiculo() {
 		String cantidad;
 		double cant;
 		Surtidor sur = obtenerMayorSurtidor();
@@ -130,7 +130,7 @@ public class Gasolinera {
 					System.out.println("Saldo insuficiente. Remueva el vehiculo del surtidor. ");
 				}
 			} else {
-				System.out.println("La cantidad introducida es insufuciente. ");
+				System.out.println("Cantidad no valida. ");
 			}
 			Utilidades.pulsaIntro();
 		} catch(IOException ioe) {
@@ -144,14 +144,14 @@ public class Gasolinera {
 			recibirVehiculo();
 			break;
 		case 2:
-			//atenderCliente(); 
+			atenderClientes();
 			break;
 		case 3:
 			// Ver Ocupacion Surtidores
 			break;
 		}
 	}
-	
+
 	private static Socio getDuenio(String matricula) {
 		Enumeration claves = socios.keys();
 		boolean encontrado = false;
@@ -178,48 +178,51 @@ public class Gasolinera {
 				}
 			}
 		}
+		
 		return sur;
 	}
 
 	public static void recibirVehiculo() {
 		String matricula = "";
 		Surtidor surt = null;
-		Vehiculo vc; 
-		
+		Vehiculo vc;
+
 		try {
 			System.out.println("Introduzca la matricula: ");
 			matricula = in.readLine();
 			surt = obtenerSurtidorMenosLleno();
-			vc = obtenerVehiculo(matricula); 
+			vc = obtenerVehiculo(matricula);
 			if(vc != null) {
-				
+				surt.insertar(vc);
+				System.out.println("Se procede a introducir al vehículo en el surtidor: ");
+				System.out.println(matricula + "se introduce en la cola del surtidor: " + surt.getId());
 			} else {
-				System.out.println("no existe");
+				System.out.println("Esa matricula no se corresponde con ningun vehiculo introducido. ");
 			}
 		} catch(IOException ioe) {
 			System.out.println("Error al leer de teclado.. ");
 		}
 	}
-	
-	private static Vehiculo obtenerVehiculo(String matricula){
+
+	private static Vehiculo obtenerVehiculo(String matricula) {
 		Vehiculo vc = null;
 		Enumeration dnis = socios.keys();
-		String dni; 
-		Socio soc; 
+		String dni;
+		Socio soc;
 		boolean encontrado = false;
-		
-		while(dnis.hasMoreElements() && !encontrado){
-			dni = (String)dnis.nextElement(); 
-			soc = socios.get(dni); 
-			
+
+		while(dnis.hasMoreElements() && !encontrado) {
+			dni = (String)dnis.nextElement();
+			soc = socios.get(dni);
+
 			if(soc.estaVehiculo(matricula)) {
 				vc = soc.getVehiculo(matricula);
-				encontrado = true;	
+				encontrado = true;
 			}
 		}
 		return vc;
 	}
-	
+
 	private static Surtidor obtenerSurtidorMenosLleno() {
 		Surtidor surt = surtidores[0];
 
@@ -230,7 +233,7 @@ public class Gasolinera {
 		}
 		return surt;
 	}
-	
+
 	private static boolean estaVehiculoCola(Vehiculo vc) {
 		boolean encontrado = false;
 		int i = 0;
