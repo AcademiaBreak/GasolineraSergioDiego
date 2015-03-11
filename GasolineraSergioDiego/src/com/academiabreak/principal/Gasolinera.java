@@ -40,6 +40,7 @@ public class Gasolinera {
 			try {
 				opcion = in.readLine();
 				if(!Utilidades.esOpcionValida(opcion, 1, 3)) {
+					System.out.println("");
 					System.out.print("Opcion invalida.");
 					Utilidades.pulsaIntro();
 				} else if(Integer.parseInt(opcion) == 3) {
@@ -59,12 +60,7 @@ public class Gasolinera {
 			gestionClientes();
 			break;
 		case 2:
-			if(hayVehiculosEnCola()) {
-				atenderCliente();
-			} else {
-				System.out.println("No hay vehiculos esperando...");
-				Utilidades.pulsaIntro();
-			}
+			atenderClientes();
 			break;
 		}
 	}
@@ -93,7 +89,7 @@ public class Gasolinera {
 			System.out.println("Error al leer de teclado...");
 		}
 	}
-	
+
 	private static boolean hayVehiculosEnCola() {
 		boolean hayVehiculos = false;
 		int i = 0;
@@ -109,7 +105,7 @@ public class Gasolinera {
 		return hayVehiculos;
 	}
 
-	private static void atenderCliente() {
+	private static void atenderVehiculo() {
 		String cantidad;
 		double cant;
 		Surtidor sur = obtenerMayorSurtidor();
@@ -138,20 +134,37 @@ public class Gasolinera {
 		}
 	}
 
-	public static void realizarAccionAtencionCliente(int opc) {
+	public static void realizarAccionAtencionCliente(int opc) throws IOException {
 		switch(opc) {
 		case 1:
 			recibirVehiculo();
 			break;
 		case 2:
-			//atenderCliente(); 
+			if(hayVehiculosEnCola()) {
+				atenderVehiculo();
+			} else {
+				System.out.println("No hay vehiculos esperando... ");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		case 3:
-			// Ver Ocupacion Surtidores
+			verSurtidores();
 			break;
 		}
 	}
-	
+
+	private static void verSurtidores() throws IOException {
+		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
+
+		for(int i = 0; i < surtidores.length; i++) {
+			System.out.println("Surtidores " + surtidores[i].getId() + ": " + surtidores[i].getTamanio());
+
+		}
+		Utilidades.pulsaIntro();
+
+	}
+
 	private static Socio getDuenio(String matricula) {
 		Enumeration claves = socios.keys();
 		boolean encontrado = false;
@@ -184,15 +197,15 @@ public class Gasolinera {
 	public static void recibirVehiculo() {
 		String matricula = "";
 		Surtidor surt = null;
-		Vehiculo vc; 
-		
+		Vehiculo vc;
+
 		try {
 			System.out.println("Introduzca la matricula: ");
 			matricula = in.readLine();
 			surt = obtenerSurtidorMenosLleno();
-			vc = obtenerVehiculo(matricula); 
+			vc = obtenerVehiculo(matricula);
 			if(vc != null) {
-				
+
 			} else {
 				System.out.println("no existe");
 			}
@@ -200,26 +213,26 @@ public class Gasolinera {
 			System.out.println("Error al leer de teclado.. ");
 		}
 	}
-	
-	private static Vehiculo obtenerVehiculo(String matricula){
+
+	private static Vehiculo obtenerVehiculo(String matricula) {
 		Vehiculo vc = null;
 		Enumeration dnis = socios.keys();
-		String dni; 
-		Socio soc; 
+		String dni;
+		Socio soc;
 		boolean encontrado = false;
-		
-		while(dnis.hasMoreElements() && !encontrado){
-			dni = (String)dnis.nextElement(); 
-			soc = socios.get(dni); 
-			
+
+		while(dnis.hasMoreElements() && !encontrado) {
+			dni = (String)dnis.nextElement();
+			soc = socios.get(dni);
+
 			if(soc.estaVehiculo(matricula)) {
 				vc = soc.getVehiculo(matricula);
-				encontrado = true;	
+				encontrado = true;
 			}
 		}
 		return vc;
 	}
-	
+
 	private static Surtidor obtenerSurtidorMenosLleno() {
 		Surtidor surt = surtidores[0];
 
@@ -230,7 +243,7 @@ public class Gasolinera {
 		}
 		return surt;
 	}
-	
+
 	private static boolean estaVehiculoCola(Vehiculo vc) {
 		boolean encontrado = false;
 		int i = 0;
@@ -296,22 +309,42 @@ public class Gasolinera {
 		}
 	}
 
-	private static void realizarAccionGestionClientes(int opc) {
+	private static void realizarAccionGestionClientes(int opc) throws IOException {
 		switch(opc) {
 		case 1:
 			altaCliente();
 			break;
 		case 2:
-			bajaCliente();
+			if(!socios.isEmpty()) {
+				bajaCliente();
+			} else {
+				System.out.println("No hay socios para dar de baja. ");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		case 3:
-			saldoCliente();
+			if(!socios.isEmpty()) {
+				saldoCliente();
+			} else {
+				System.out.println("No hay socios para introducir saldo. ");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		case 4:
-			altaVehiculo();
+			if(!socios.isEmpty()) {
+				altaVehiculo();
+			} else {
+				System.out.println("No hay socios para introducir vehiculos. ");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		case 5:
-			bajaVehiculo();
+			if(!socios.isEmpty()) {
+				bajaVehiculo();
+			} else {
+				System.out.println("No hay socios para dar de baja vehiculos. ");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		}
 	}

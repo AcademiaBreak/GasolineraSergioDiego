@@ -97,7 +97,7 @@ public class Utilidades {
 	public static void pulsaIntro() throws IOException {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 
-		System.out.print(" Pulsa intro para continuar...");
+		System.out.print("\n *** Pulsa intro para continuar. ");
 		in.readLine();
 	}
 }
