@@ -40,6 +40,7 @@ public class Gasolinera {
 			try {
 				opcion = in.readLine();
 				if(!Utilidades.esOpcionValida(opcion, 1, 3)) {
+					System.out.println("");
 					System.out.print("Opcion invalida.");
 					Utilidades.pulsaIntro();
 				} else if(Integer.parseInt(opcion) == 3) {
@@ -59,12 +60,7 @@ public class Gasolinera {
 			gestionClientes();
 			break;
 		case 2:
-			if(hayVehiculosEnCola()) {
-				atenderVehiculo();
-			} else {
-				System.out.println("No hay vehiculos esperando...");
-				Utilidades.pulsaIntro();
-			}
+			atenderClientes();
 			break;
 		}
 	}
@@ -138,18 +134,36 @@ public class Gasolinera {
 		}
 	}
 
-	public static void realizarAccionAtencionCliente(int opc) {
+
+	public static void realizarAccionAtencionCliente(int opc) throws IOException {
 		switch(opc) {
 		case 1:
 			recibirVehiculo();
 			break;
 		case 2:
-			atenderClientes();
+			if(hayVehiculosEnCola()) {
+				atenderVehiculo();
+			} else {
+				System.out.println("No hay vehiculos esperando... ");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		case 3:
-			// Ver Ocupacion Surtidores
+			verSurtidores();
 			break;
 		}
+	}
+
+	private static void verSurtidores() throws IOException {
+		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
+
+		for(int i = 0; i < surtidores.length; i++) {
+			System.out.println("Surtidores " + surtidores[i].getId() + ": " + surtidores[i].getTamanio());
+
+		}
+		Utilidades.pulsaIntro();
+
 	}
 
 	private static Socio getDuenio(String matricula) {
@@ -299,22 +313,42 @@ public class Gasolinera {
 		}
 	}
 
-	private static void realizarAccionGestionClientes(int opc) {
+	private static void realizarAccionGestionClientes(int opc) throws IOException {
 		switch(opc) {
 		case 1:
 			altaCliente();
 			break;
 		case 2:
-			bajaCliente();
+			if(!socios.isEmpty()) {
+				bajaCliente();
+			} else {
+				System.out.println("No hay socios para dar de baja. ");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		case 3:
-			saldoCliente();
+			if(!socios.isEmpty()) {
+				saldoCliente();
+			} else {
+				System.out.println("No hay socios para introducir saldo. ");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		case 4:
-			altaVehiculo();
+			if(!socios.isEmpty()) {
+				altaVehiculo();
+			} else {
+				System.out.println("No hay socios para introducir vehiculos. ");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		case 5:
-			bajaVehiculo();
+			if(!socios.isEmpty()) {
+				bajaVehiculo();
+			} else {
+				System.out.println("No hay socios para dar de baja vehiculos. ");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		}
 	}
@@ -329,6 +363,8 @@ public class Gasolinera {
 			System.out.print("Introduce DNI: ");
 			cad = in.readLine();
 			if(Utilidades.esDni(cad)) {
+				//mirar si existe el dni
+				//throw new DniDuplicadoException("Este dni ya exite"); 
 				soc.setDni(cad);
 				System.out.print("Introduce nombre: ");
 				soc.setNombre(in.readLine());
@@ -344,6 +380,9 @@ public class Gasolinera {
 				System.out.print("DNI invalido. ");
 			}
 			Utilidades.pulsaIntro();
+			
+		/*} catch(Exception dde) {
+			System.out.println(dde.getMessage());*/
 		} catch(IOException ioe) {
 			System.out.println("Error al leer de teclado...");
 		}
