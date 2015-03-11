@@ -240,6 +240,8 @@ public class Gasolinera {
 			System.out.print("Introduce DNI: ");
 			cad = in.readLine();
 			if(Utilidades.esDni(cad)) {
+				//mirar si existe el dni
+				//throw new DniDuplicadoException("Este dni ya exite"); 
 				soc.setDni(cad);
 				System.out.print("Introduce nombre: ");
 				soc.setNombre(in.readLine());
@@ -255,6 +257,9 @@ public class Gasolinera {
 				System.out.print("DNI invalido. ");
 			}
 			Utilidades.pulsaIntro();
+			
+		/*} catch(Exception dde) {
+			System.out.println(dde.getMessage());*/
 		} catch(IOException ioe) {
 			System.out.println("Error al leer de teclado...");
 		}
