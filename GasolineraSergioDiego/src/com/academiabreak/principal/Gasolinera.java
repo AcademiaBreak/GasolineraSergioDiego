@@ -32,6 +32,7 @@ public class Gasolinera {
 
 		while(!salir) {
 			Utilidades.limpiarPantalla();
+			Utilidades.imprimirCabecera();
 			System.out.println("1. Gestion Clientes.");
 			System.out.println("2. Atencion Clientes.");
 			System.out.println("3. Salir.");
@@ -151,7 +152,7 @@ public class Gasolinera {
 		}
 		return surt;
 	}
-
+	
 	private static boolean estaVehiculoCola(Vehiculo vc) {
 		boolean encontrado = false;
 		int i = 0;
@@ -193,6 +194,7 @@ public class Gasolinera {
 
 		while(!salir) {
 			Utilidades.limpiarPantalla();
+			Utilidades.imprimirCabecera();
 			System.out.println("1. Alta Cliente.");
 			System.out.println("2. Baja Cliente.");
 			System.out.println("3. Ingreso Saldo Cliente.");
@@ -242,6 +244,7 @@ public class Gasolinera {
 
 		try {
 			Utilidades.limpiarPantalla();
+			Utilidades.imprimirCabecera();
 			System.out.print("Introduce DNI: ");
 			cad = in.readLine();
 			if(Utilidades.esDni(cad)) {
@@ -271,6 +274,7 @@ public class Gasolinera {
 		Socio soc;
 
 		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		try {
 			System.out.print("Introduzca el DNI del cliente que desea eliminar: ");
 			cad = in.readLine();
@@ -303,6 +307,7 @@ public class Gasolinera {
 		Socio soc = null;
 
 		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		try {
 			System.out.print("Introduzca DNI de socio para meter saldo: ");
 			dni = in.readLine();
@@ -337,6 +342,7 @@ public class Gasolinera {
 		Vehiculo v;
 
 		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		try {
 			System.out.print("Introduzca DNI de socio: ");
 			dni = in.readLine();
@@ -368,7 +374,8 @@ public class Gasolinera {
 		String matricula = "";
 		String marca = "";
 		String opcion = "";
-
+		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		try {
 			System.out.print("Introduzca matricula: ");
 			matricula = in.readLine();
@@ -452,6 +459,7 @@ public class Gasolinera {
 		String mat = "";
 
 		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		try {
 			System.out.print("Introduzca el DNI del cliente: ");
 			dni = in.readLine();
@@ -489,7 +497,8 @@ public class Gasolinera {
 	private static int pedirSurtidor() {
 		String cad = "";
 
-		// TODO: poner logo
+		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
 		while(!Utilidades.esEntero(cad)) {
 			System.out.print("Introduce el surtidor: ");
 			try {
