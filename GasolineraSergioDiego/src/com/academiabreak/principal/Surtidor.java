@@ -28,7 +28,7 @@ public class Surtidor {
 		return lista.remove(0);
 	}
 
-	public int getTamaño() {
+	public int getTamanio() {
 		return lista.size();
 	}
 

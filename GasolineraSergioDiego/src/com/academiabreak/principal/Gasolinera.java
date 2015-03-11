@@ -53,13 +53,18 @@ public class Gasolinera {
 		}
 	}
 
-	private static void realizarAccionMenuPrincipal(int opc) {
+	private static void realizarAccionMenuPrincipal(int opc) throws IOException {
 		switch(opc) {
 		case 1:
 			gestionClientes();
 			break;
 		case 2:
-			// TODO: atenderClientes();
+			if(hayVehiculosEnCola()) {
+				atenderCliente();
+			} else {
+				System.out.println("No hay vehiculos esperando...");
+				Utilidades.pulsaIntro();
+			}
 			break;
 		}
 	}
@@ -88,6 +93,50 @@ public class Gasolinera {
 			System.out.println("Error al leer de teclado...");
 		}
 	}
+	
+	private static boolean hayVehiculosEnCola() {
+		boolean hayVehiculos = false;
+		int i = 0;
+
+		while(!hayVehiculos && i < surtidores.length) {
+			if(surtidores[i].getTamanio() > 0) {
+				hayVehiculos = true;
+			} else {
+				i++;
+			}
+		}
+
+		return hayVehiculos;
+	}
+
+	private static void atenderCliente() {
+		String cantidad;
+		double cant;
+		Surtidor sur = obtenerMayorSurtidor();
+		Vehiculo v = sur.atender();
+		Socio soc = getDuenio(v.getMatricula());
+
+		Utilidades.limpiarPantalla();
+		Utilidades.imprimirCabecera();
+		try {
+			System.out.println("Introduzca cuanto quiera repostar: ");
+			cantidad = in.readLine();
+			if(Utilidades.esDecimal(cantidad)) {
+				cant = Double.parseDouble(cantidad);
+				if(cant <= soc.getSaldo()) {
+					soc.retirarSaldo(cant);
+					System.out.println("Gracias por elegirnos,esperamos volver a verle pronto. ");
+				} else {
+					System.out.println("Saldo insuficiente. Remueva el vehiculo del surtidor. ");
+				}
+			} else {
+				System.out.println("La cantidad introducida es insufuciente. ");
+			}
+			Utilidades.pulsaIntro();
+		} catch(IOException ioe) {
+			System.out.println("Error al leer de teclado...");
+		}
+	}
 
 	public static void realizarAccionAtencionCliente(int opc) {
 		switch(opc) {
@@ -101,6 +150,35 @@ public class Gasolinera {
 			// Ver Ocupacion Surtidores
 			break;
 		}
+	}
+	
+	private static Socio getDuenio(String matricula) {
+		Enumeration claves = socios.keys();
+		boolean encontrado = false;
+		Socio soc = null;
+
+		while(claves.hasMoreElements() && !encontrado) {
+			soc = socios.get(claves.nextElement());
+			if(soc.estaVehiculo(matricula)) {
+				encontrado = true;
+			}
+		}
+
+		return soc;
+	}
+
+	public static Surtidor obtenerMayorSurtidor() {
+		Surtidor sur = null;
+
+		if(surtidores.length > 0) {
+			sur = surtidores[0];
+			for(int i = 1; i < surtidores.length; i++) {
+				if(sur.getTamanio() < surtidores[i].getTamanio()) {
+					sur = surtidores[i];
+				}
+			}
+		}
+		return sur;
 	}
 
 	public static void recibirVehiculo() {
@@ -146,7 +224,7 @@ public class Gasolinera {
 		Surtidor surt = surtidores[0];
 
 		for(int i = 1; i < surtidores.length; i++) {
-			if(surt.getTamaño() > surtidores[i].getTamaño()) {
+			if(surt.getTamanio() > surtidores[i].getTamanio()) {
 				surt = surtidores[i];
 			}
 		}
