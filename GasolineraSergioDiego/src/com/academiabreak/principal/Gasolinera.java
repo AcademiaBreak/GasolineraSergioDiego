@@ -22,7 +22,7 @@ public class Gasolinera {
 
 	private static void crearSurtidores() {
 		for(int i = 0; i < surtidores.length; i++) {
-			surtidores[i] = new Surtidor(i);
+			surtidores[i] = new Surtidor(i+1);
 		}
 	}
 
@@ -68,25 +68,34 @@ public class Gasolinera {
 	private static void atenderClientes() {
 		String cad;
 		int opc;
-
-		Utilidades.limpiarPantalla();
-		System.out.println("1. Recibir vehiculo. ");
-		System.out.println("2. Atender vehiculo. ");
-		System.out.println("3. Ver Ocupacion Surtidores. ");
-		System.out.println("4. Salir");
-		System.out.print("\t OPCION: ");
-		try {
-			cad = in.readLine();
-
-			if(Utilidades.esOpcionValida(cad, 1, 4)) {
-				opc = Integer.parseInt(cad);
-				realizarAccionAtencionCliente(opc);
-			} else {
-				System.out.println();
-				System.out.println("Opcion Invalida");
+		boolean salir = false; 
+		
+		while(!salir) {
+			Utilidades.limpiarPantalla();
+			Utilidades.imprimirCabecera();
+			System.out.println("1. Recibir vehiculo. ");
+			System.out.println("2. Atender vehiculo. ");
+			System.out.println("3. Ver Ocupacion Surtidores. ");
+			System.out.println("4. Salir");
+			System.out.print("\t OPCION: ");
+			try {
+				cad = in.readLine();
+	
+				if(Utilidades.esOpcionValida(cad, 1, 4)) {
+					opc = Integer.parseInt(cad);
+					if(opc == 4) {
+						salir = true; 
+					} else {
+						realizarAccionAtencionCliente(opc);
+					}
+				} else {
+					System.out.println();
+					System.out.println("Opcion Invalida");
+					Utilidades.pulsaIntro();
+				}
+			} catch(IOException ioe) {
+				System.out.println("Error al leer de teclado...");
 			}
-		} catch(IOException ioe) {
-			System.out.println("Error al leer de teclado...");
 		}
 	}
 
@@ -115,7 +124,7 @@ public class Gasolinera {
 		Utilidades.limpiarPantalla();
 		Utilidades.imprimirCabecera();
 		try {
-			System.out.println("Introduzca cuanto quiera repostar: ");
+			System.out.print("Introduzca cuanto quiera repostar: ");
 			cantidad = in.readLine();
 			if(Utilidades.esDecimal(cantidad)) {
 				cant = Double.parseDouble(cantidad);
@@ -150,7 +159,6 @@ public class Gasolinera {
 			break;
 		case 3:
 			verSurtidores();
-			break;
 		}
 	}
 
@@ -202,17 +210,22 @@ public class Gasolinera {
 		Vehiculo vc;
 
 		try {
-			System.out.println("Introduzca la matricula: ");
+			System.out.print("Introduzca la matricula: ");
 			matricula = in.readLine();
 			surt = obtenerSurtidorMenosLleno();
 			vc = obtenerVehiculo(matricula);
 			if(vc != null) {
-				surt.insertar(vc);
-				System.out.println("Se procede a introducir al vehículo en el surtidor: ");
-				System.out.println(matricula + "se introduce en la cola del surtidor: " + surt.getId());
+				if(!estaVehiculoCola(vc)) {
+					surt.insertar(vc);
+					System.out.println("Se procede a introducir al vehículo en el surtidor: ");
+					System.out.println(matricula + " se introduce en la cola del surtidor: " + surt.getId());
+				} else {
+					System.out.println("Este vehiculo ya esta en un surtidor. ");
+				}
 			} else {
 				System.out.println("Esa matricula no se corresponde con ningun vehiculo introducido. ");
 			}
+			Utilidades.pulsaIntro();
 		} catch(IOException ioe) {
 			System.out.println("Error al leer de teclado.. ");
 		}
@@ -375,7 +388,6 @@ public class Gasolinera {
 				socios.put(soc.getDni(), soc);
 				System.out.println("*** Se procede a dar de alta al cliente:");
 				System.out.println("\t" + soc.getNombre() + " con DNI: " + soc.getDni());
-				System.out.println();
 			} else {
 				System.out.print("DNI invalido. ");
 			}
