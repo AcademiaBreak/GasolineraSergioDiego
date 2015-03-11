@@ -95,7 +95,7 @@ public class Gasolinera {
 			recibirVehiculo();
 			break;
 		case 2:
-			// Atender Vehiculo
+			//atenderCliente(); 
 			break;
 		case 3:
 			// Ver Ocupacion Surtidores
