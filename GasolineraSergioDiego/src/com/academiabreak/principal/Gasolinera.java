@@ -16,16 +16,16 @@ public class Gasolinera {
 		surtidores = new Surtidor[pedirSurtidor()];
 		socios = new Hashtable<String, Socio>();
 
-		crearSurtidores(); 
+		crearSurtidores();
 		menuPrincipal();
 	}
 
 	private static void crearSurtidores() {
-		for(int i=0; i<surtidores.length; i++) {
-			surtidores[i] = new Surtidor(i); 
+		for(int i = 0; i < surtidores.length; i++) {
+			surtidores[i] = new Surtidor(i);
 		}
 	}
-	
+
 	private static void menuPrincipal() {
 		String opcion = "";
 		boolean salir = false;
@@ -58,28 +58,106 @@ public class Gasolinera {
 			gestionClientes();
 			break;
 		case 2:
-			//TODO: atenderClientes(); 
+			// TODO: atenderClientes();
 			break;
 		}
 	}
 
 	private static void atenderClientes() {
-		//TODO: menu atencionClientes()
+		String cad;
+		int opc;
+
+		Utilidades.limpiarPantalla();
+		System.out.println("1. Recibir vehiculo. ");
+		System.out.println("2. Atender vehiculo. ");
+		System.out.println("3. Ver Ocupacion Surtidores. ");
+		System.out.println("4. Salir");
+		System.out.print("\t OPCION: ");
+		try {
+			cad = in.readLine();
+
+			if(Utilidades.esOpcionValida(cad, 1, 4)) {
+				opc = Integer.parseInt(cad);
+				realizarAccionAtencionCliente(opc);
+			} else {
+				System.out.println();
+				System.out.println("Opcion Invalida");
+			}
+		} catch(IOException ioe) {
+			System.out.println("Error al leer de teclado...");
+		}
+	}
+
+	public static void realizarAccionAtencionCliente(int opc) {
+		switch(opc) {
+		case 1:
+			recibirVehiculo();
+			break;
+		case 2:
+			// Atender Vehiculo
+			break;
+		case 3:
+			// Ver Ocupacion Surtidores
+			break;
+		}
+	}
+
+	public static void recibirVehiculo() {
+		String matricula = "";
+		Surtidor surt = null;
+		Vehiculo vc; 
+		
+		try {
+			System.out.println("Introduzca la matricula: ");
+			matricula = in.readLine();
+			surt = obtenerSurtidorMenosLleno();
+			vc = obtenerVehiculo(matricula); 
+			if(vc != null) {
+				
+			} else {
+				System.out.println("no existe");
+			}
+		} catch(IOException ioe) {
+			System.out.println("Error al leer de teclado.. ");
+		}
 	}
 	
+	private static Vehiculo obtenerVehiculo(String matricula){
+		Vehiculo vc = null;
+		Enumeration dnis = socios.keys();
+		String dni; 
+		Socio soc; 
+		boolean encontrado = false;
+		
+		while(dnis.hasMoreElements() && !encontrado){
+			dni = (String)dnis.nextElement(); 
+			soc = socios.get(dni); 
+			
+			if(soc.estaVehiculo(matricula)) {
+				vc = soc.getVehiculo(matricula);
+				encontrado = true;	
+			}
+		}
+		return vc;
+	}
+	
+	private static Surtidor obtenerSurtidorMenosLleno() {
+		Surtidor surt = surtidores[0];
+
+		for(int i = 1; i < surtidores.length; i++) {
+			if(surt.getTamaño() > surtidores[i].getTamaño()) {
+				surt = surtidores[i];
+			}
+		}
+		return surt;
+	}
+
 	private static boolean estaVehiculoCola(Vehiculo vc) {
 		boolean encontrado = false;
 		int i = 0;
 
 		while(!encontrado && i < surtidores.length) {
-			//TODO: reimplementar estaVehiculoCola
-			/*
-			 * Esto ahora mismo esta comparando surtidores[i] (Que es un Surtidor) con vc (Que es un coche)
-			 * Hay que hacer un metodo en la clase surtidor que reciba una matricula y diga
-			 * si está o si no
-			 */
-			if(surtidores[i].equals(vc)) {
-				//Algo como surtidores[i].estaVehiculo(vc.getMatricula()); 
+			if(surtidores[i].estaVehiculo(vc)) {
 				encontrado = true;
 			} else {
 				i++;
@@ -93,16 +171,12 @@ public class Gasolinera {
 		boolean encontrado = false;
 		int i = 0;
 		Vehiculo vc;
-		Enumeration keys = listaVehiculos.keys();
+		Enumeration<String> keys = listaVehiculos.keys();
 
 		while(keys.hasMoreElements()) {
 			vc = listaVehiculos.get(keys.nextElement());
 			while(!encontrado && i < surtidores.length) {
-				//TODO: reimplementar estaVehiculoCola
-				/*
-				 * Lo mismo que en el metodo de arriba
-				 */
-				if(surtidores[i].equals(vc)) {
+				if(surtidores[i].estaVehiculo(vc)) {
 					encontrado = true;
 				} else {
 					i++;
