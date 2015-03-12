@@ -153,6 +153,7 @@ public class Gasolinera {
 			if(hayVehiculosEnCola()) {
 				atenderVehiculo();
 			} else {
+				System.out.println("");
 				System.out.println("No hay vehiculos esperando... ");
 				Utilidades.pulsaIntro();
 			}
@@ -175,7 +176,7 @@ public class Gasolinera {
 	}
 
 	private static Socio getDuenio(String matricula) {
-		Enumeration claves = socios.keys();
+		Enumeration<String> claves = socios.keys();
 		boolean encontrado = false;
 		Socio soc = null;
 
@@ -210,6 +211,8 @@ public class Gasolinera {
 		Vehiculo vc;
 
 		try {
+			Utilidades.limpiarPantalla(); 
+			Utilidades.imprimirCabecera();
 			System.out.print("Introduzca la matricula: ");
 			matricula = in.readLine();
 			surt = obtenerSurtidorMenosLleno();
@@ -233,7 +236,7 @@ public class Gasolinera {
 
 	private static Vehiculo obtenerVehiculo(String matricula) {
 		Vehiculo vc = null;
-		Enumeration dnis = socios.keys();
+		Enumeration<String> dnis = socios.keys();
 		String dni;
 		Socio soc;
 		boolean encontrado = false;
@@ -376,25 +379,26 @@ public class Gasolinera {
 			System.out.print("Introduce DNI: ");
 			cad = in.readLine();
 			if(Utilidades.esDni(cad)) {
-				//mirar si existe el dni
-				//throw new DniDuplicadoException("Este dni ya exite"); 
-				soc.setDni(cad);
-				System.out.print("Introduce nombre: ");
-				soc.setNombre(in.readLine());
-				System.out.print("Introduce apellido: ");
-				soc.setApellidos(in.readLine());
-				System.out.print("Introduce direccion: ");
-				soc.setDireccion(in.readLine());
-				socios.put(soc.getDni(), soc);
-				System.out.println("*** Se procede a dar de alta al cliente:");
-				System.out.println("\t" + soc.getNombre() + " con DNI: " + soc.getDni());
+				cad = cad.toUpperCase();
+				if(!socios.containsKey(cad)) {
+					soc.setDni(cad);
+					System.out.print("Introduce nombre: ");
+					soc.setNombre(in.readLine());
+					System.out.print("Introduce apellido: ");
+					soc.setApellidos(in.readLine());
+					System.out.print("Introduce direccion: ");
+					soc.setDireccion(in.readLine());
+					socios.put(soc.getDni(), soc);
+					System.out.println("");
+					System.out.println("*** Se procede a dar de alta al cliente:");
+					System.out.println("\t" + soc.getNombre() + " con DNI: " + soc.getDni());
+				} else {
+					System.out.println("Este DNI ya esta registrado. ");
+				}
 			} else {
 				System.out.print("DNI invalido. ");
 			}
 			Utilidades.pulsaIntro();
-			
-		/*} catch(Exception dde) {
-			System.out.println(dde.getMessage());*/
 		} catch(IOException ioe) {
 			System.out.println("Error al leer de teclado...");
 		}
@@ -411,6 +415,7 @@ public class Gasolinera {
 			System.out.print("Introduzca el DNI del cliente que desea eliminar: ");
 			cad = in.readLine();
 			if(Utilidades.esDni(cad)) {
+				cad = cad.toUpperCase(); 
 				if(socios.containsKey(cad)) {
 					soc = socios.get(cad);
 					if(!estaVehiculoCola(soc.getVehiculos())) {
@@ -421,10 +426,10 @@ public class Gasolinera {
 						System.out.println("\t" + soc.getNombre() + " con DNI: " + cad + "tiene vehiculos en cola. ");
 					}
 				} else {
-					System.out.print("Introducido cliente no existente. ");
+					System.out.print("\nIntroducido cliente no existente. ");
 				}
 			} else {
-				System.out.print("DNI invalido.");
+				System.out.print("\nDNI invalido.");
 			}
 			Utilidades.pulsaIntro();
 		} catch(IOException ioe) {
@@ -432,7 +437,7 @@ public class Gasolinera {
 		}
 
 	}
-
+	
 	private static void saldoCliente() {
 		String cad = "";
 		String dni = "";
@@ -444,23 +449,24 @@ public class Gasolinera {
 			System.out.print("Introduzca DNI de socio para meter saldo: ");
 			dni = in.readLine();
 			if(Utilidades.esDni(dni)) {
+				dni = dni.toUpperCase();
 				if(socios.containsKey(dni)) {
 					System.out.print("Introduzca el saldo a ingresar: ");
 					cad = in.readLine();
 					if(Utilidades.esDecimal(cad)) {
 						soc = socios.get(dni);
 						soc.ingresarSaldo(Double.parseDouble(cad));
+						System.out.println("");
 						System.out.println("*** Se procede a incrementar el saldo del cliente:");
 						System.out.println(soc.getNombre() + " con DNI: " + dni + " en " + cad);
-						System.out.println();
 					} else {
-						System.out.print("Saldo introducido no valido. ");
+						System.out.print("\nSaldo introducido no valido. ");
 					}
 				} else {
-					System.out.print("No existe el socio introducido. ");
+					System.out.print("\nNo existe el socio introducido. ");
 				}
 			} else {
-				System.out.print("DNI introducido no valido. ");
+				System.out.print("\nDNI introducido no valido. ");
 			}
 			Utilidades.pulsaIntro();
 		} catch(IOException ioe) {
@@ -479,21 +485,23 @@ public class Gasolinera {
 			System.out.print("Introduzca DNI de socio: ");
 			dni = in.readLine();
 			if(Utilidades.esDni(dni)) {
+				dni = dni.toUpperCase(); 
 				if(socios.containsKey(dni)) {
 					soc = socios.get(dni);
 					v = crearVehiculo(soc);
 
 					if(v != null) {
 						soc.insertarVehiculo(v);
+						System.out.println("");
 						System.out.println("***Se procede a dar de alta el vehículo del cliente:");
 						System.out.println(soc.getNombre() + " con DNI: " + soc.getDni() + " Vehículo con matrícula: "
 								+ v.getMatricula());
 					}
 				} else {
-					System.out.print("No existe el socio introducido. ");
+					System.out.print("\nNo existe el socio introducido. ");
 				}
 			} else {
-				System.out.print("DNI introducido no valido. ");
+				System.out.print("\nDNI introducido no valido. ");
 			}
 			Utilidades.pulsaIntro();
 		} catch(IOException ioe) {
@@ -520,6 +528,7 @@ public class Gasolinera {
 				System.out.println("2.Moto ");
 				System.out.print("\tElija tipo de vehiculo: ");
 				opcion = in.readLine();
+				System.out.println("");
 				switch(opcion) {
 				case "1":
 					vehiculo = crearCoche(matricula, marca);
@@ -529,11 +538,9 @@ public class Gasolinera {
 					break;
 				default:
 					System.out.println("Opcion no valida... ");
-					Utilidades.pulsaIntro();
 				}
 			} else {
 				System.out.println("El vehiculo ya existe. ");
-				Utilidades.pulsaIntro();
 			}
 		} catch(IOException ioe) {
 			System.out.print("Error al leer de teclado");
@@ -571,8 +578,8 @@ public class Gasolinera {
 		Moto moto = null;
 		String cc = "";
 		int cilindrada = 0;
-
-		System.out.println("Introduce la cilindrada: ");
+		
+		System.out.print("Introduce la cilindrada: ");
 		cc = in.readLine();
 		if(Utilidades.esEntero(cc)) {
 			cilindrada = Integer.parseInt(cc);
@@ -596,6 +603,7 @@ public class Gasolinera {
 			System.out.print("Introduzca el DNI del cliente: ");
 			dni = in.readLine();
 			if(Utilidades.esDni(dni)) {
+				dni = dni.toUpperCase(); 
 				if(socios.containsKey(dni)) {
 					soc = socios.get(dni);
 					System.out.print("Introduce la matricula: ");
@@ -603,6 +611,7 @@ public class Gasolinera {
 					if(soc.estaVehiculo(mat)) {
 						if(!estaVehiculoCola(soc.getVehiculo(mat))) {
 							socios.remove(dni);
+							System.out.println("");
 							System.out.println("***Se procede a dar de baja al vehiculo del cliente :");
 							System.out.println("\t" + soc.getNombre() + " con DNI: " + dni + " matricula vehículo: "
 									+ mat);

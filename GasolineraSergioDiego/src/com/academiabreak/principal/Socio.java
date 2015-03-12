@@ -106,6 +106,7 @@ public class Socio {
 		return retirado;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Hashtable<String, Vehiculo> getVehiculos() {
 		return (Hashtable<String, Vehiculo>)vehiculos.clone();
 	}
