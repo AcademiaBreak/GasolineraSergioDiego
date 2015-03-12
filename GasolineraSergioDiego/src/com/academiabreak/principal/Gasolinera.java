@@ -144,7 +144,7 @@ public class Gasolinera {
 	}
 
 
-	public static void realizarAccionAtencionCliente(int opc) throws IOException {
+	private static void realizarAccionAtencionCliente(int opc) throws IOException {
 		switch(opc) {
 		case 1:
 			recibirVehiculo();
@@ -190,7 +190,7 @@ public class Gasolinera {
 		return soc;
 	}
 
-	public static Surtidor obtenerMayorSurtidor() {
+	private static Surtidor obtenerMayorSurtidor() {
 		Surtidor sur = null;
 
 		if(surtidores.length > 0) {
@@ -205,7 +205,7 @@ public class Gasolinera {
 		return sur;
 	}
 
-	public static void recibirVehiculo() {
+	private static void recibirVehiculo() {
 		String matricula = "";
 		Surtidor surt = null;
 		Vehiculo vc;
